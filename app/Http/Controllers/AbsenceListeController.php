@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\NouvelReponse;
 use Carbon\Carbon;
 use App\Models\Absence;
 use App\Models\MotifAbsence;
@@ -9,6 +10,7 @@ use App\Models\StatutAbsence;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AbsenceListeController extends Controller
 {
@@ -16,8 +18,9 @@ class AbsenceListeController extends Controller
     {
         $motifs = MotifAbsence::all();
         $statuts = StatutAbsence::all();
+        $notifications = auth()->user()->unreadNotifications;
         $absences = Absence::orderBy('created_at', 'desc')->get();
-        return view('admin.pages.absence.liste', compact('absences', 'motifs', 'statuts'));
+        return view('admin.pages.absence.liste', compact('absences', 'motifs', 'statuts', 'notifications'));
     }
     public function updateById(Request $request, string $id)
     {
@@ -111,14 +114,20 @@ class AbsenceListeController extends Controller
                 'reponse' => $jsonResponse,
             ]);
 
-            return redirect()->route('liste')->with('success', 'La demande d\'absence a été approuvée.');
-        } elseif (count($absences) >= 3) {
+            $user = User::where('id', $userDemandeur->id)->get();
+            Notification::send($user, new NouvelReponse($absence));
+
+            return redirect()->route('liste')->with('success', 'Vous avez donné une réponse à la demande d\'Absence');
+        } elseif (count($absences) >= 3 && strtolower($user->role->etiquette) !== 'administrateur') {
             $absence_non_valide = StatutAbsence::where('nom', 'Refusée')->first();
 
             $absence->update([
                 'statut_absence_id' => $absence_non_valide ? $absence_non_valide->id : null,
                 'reponse' => $jsonResponse,
             ]);
+
+            $user = User::where('id', $userDemandeur->id)->get();
+            Notification::send($user, new NouvelReponse($absence));
 
             return redirect()->route('liste')->with('success', 'La demande d\'absence a été refusée.');
         } else {
@@ -127,7 +136,21 @@ class AbsenceListeController extends Controller
                 'reponse' => $jsonResponse,
             ]);
 
-            return redirect()->route('liste')->with('success', 'La demande d\'absence a été approuvée.');
+            $user = User::where('id', $userDemandeur->id)->get();
+            Notification::send($user, new NouvelReponse($absence));
+
+            return redirect()->route('liste')->with('success', 'Vous avez donné une réponse à la demande d\'Absence');
         }
+    }
+
+    public function showResponse($id){
+        $motifs = MotifAbsence::all();
+        $statuts = StatutAbsence::all();
+        $user = auth()->user();
+
+        $absence = Absence::find($id);
+        $notifications = auth()->user()->unreadNotifications;
+
+        return view('admin.pages.absence.response', compact('absence', 'motifs', 'statuts','notifications'));
     }
 }

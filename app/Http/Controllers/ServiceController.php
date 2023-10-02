@@ -13,7 +13,8 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        return view('admin.pages.service.index', compact('services'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.service.index', compact('services','notifications'));
     }
 
     /**

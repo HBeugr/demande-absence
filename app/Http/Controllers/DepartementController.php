@@ -13,7 +13,8 @@ class DepartementController extends Controller
     public function index()
     {
         $departements = Departement::all();
-        return view('admin.pages.departement.index', compact('departements'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.departement.index', compact('departements','notifications'));
     }
 
     /**

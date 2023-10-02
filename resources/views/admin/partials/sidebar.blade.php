@@ -8,7 +8,7 @@
             @php
                 $menuItems = [
                     ['route' => 'accueil', 'name' => 'accueil', 'label' => 'Tableau de Bords', 'icon' => 'fe fe-home', 'permission' => true],
-                    ['route' => 'utilisateurs.index', 'name' => 'utilisateurs', 'label' => 'Employés', 'icon' => 'fe fe-users', 'permission' => true],
+                    ['route' => 'utilisateurs.index', 'name' => 'utilisateurs', 'label' => 'Employés', 'icon' => 'fe fe-users', 'permission' => in_array(Str::lower(auth()->user()->role->etiquette), ['administrateur', 'manager'])],
                     ['route' => 'clients.index', 'name' => 'clients', 'label' => 'Clients', 'icon' => 'fe fe-user', 'permission' => true],
                     ['route' => 'commandes.index', 'name' => 'commandes', 'label' => 'Commandes', 'icon' => 'fe fe-add-cart', 'permission' => true],
                     ['route' => 'services.index', 'name' => 'services', 'label' => 'Produits', 'icon' => 'fe fe-cart', 'permission' => in_array(Str::lower(auth()->user()->role->etiquette), ['administrateur', 'manager'])],

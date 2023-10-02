@@ -13,7 +13,8 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all();
-        return view('admin.pages.client.index', compact('clients'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.client.index', compact('clients','notifications'));
     }
 
     /**

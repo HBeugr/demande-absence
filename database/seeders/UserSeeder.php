@@ -65,8 +65,8 @@ class UserSeeder extends Seeder
 
         //employe
         User::create([
-            'departement_id' => 1, // informatique.
-            'role_id' => 1, // manager.
+            'departement_id' => 2,
+            'role_id' => 1,
             'nom' => 'employe1',
             'prenoms' => 'employe1',
             'email' => 'employe1@dev.com',

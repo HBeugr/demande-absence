@@ -131,7 +131,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    @if (is_null(($absence->cancelled_at && $absence->cancelled_by) || $absence->reponse))
+                                                    @if (is_null($absence->cancelled_at) && is_null($absence->cancelled_by) && is_null($absence->reponse))
                                                         <a class="btn btn-sm bg-dark-light cancel-absence-button"
                                                             style="margin-right: 10%;"
                                                             data-absence-id="{{ $absence->id }}">
@@ -224,52 +224,63 @@
                                         </div>
                                         <div class="modal fade" id="show_absence_confirmation_{{ $absence->id }}"
                                             aria-hidden="true" role="dialog">
+                                            @php
+                                                $jsonData = $absence->reponse;
+                                                $data = json_decode($jsonData);
+                                                $superieurId = $data->superieurId;
+                                                $userApprouve = \App\Models\User::find($superieurId);
+                                            @endphp
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Details la Demande d'absence</h5>
+                                                        <h5 class="modal-title">Reponse à votre Demande d'Autorisation
+                                                            d'Absence</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form
-                                                            action="{{ route('absences.update', ['absence' => $absence->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-row">
-                                                                <div class="col-md-3">
-                                                                    <label for="statut_absence_id">Statut de
-                                                                        l'Absence</label>
-                                                                    <input id="statut_absence_id" type="text"
-                                                                        name="statut_absence_id" class="form-control"
-                                                                        value="{{ $absence->statutAbsence->nom }}"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="motif_absence_id">Motif de
-                                                                        l'Absence</label>
-                                                                    <input id="motif_absence_id" type="text"
-                                                                        name="motif_absence_id" class="form-control"
-                                                                        value="{{ $absence->motifAbsence->nom }}"
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="date_debut">Date de Début</label>
-                                                                    <input id="date_debut" type="date"
-                                                                        name="date_debut" class="form-control"
-                                                                        value="{{ $absence->date_debut }}" disabled>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <label for="date_fin">Date de Fin</label>
-                                                                    <input id="date_fin" type="date" name="date_fin"
-                                                                        class="form-control"
-                                                                        value="{{ $absence->date_fin }}" disabled>
-                                                                </div>
+                                                        <div class="form-row">
+                                                            <div class="col-md-3">
+                                                                <label for="statut_absence_id">Statut de
+                                                                    l'Absence</label>
+                                                                <input id="statut_absence_id" type="text"
+                                                                    name="statut_absence_id" class="form-control"
+                                                                    value="{{ $absence->statutAbsence->nom }}" disabled>
                                                             </div>
-                                                        </form>
+                                                            <div class="col-md-3">
+                                                                <label for="motif_absence_id">Motif de
+                                                                    l'Absence</label>
+                                                                <input id="motif_absence_id" type="text"
+                                                                    name="motif_absence_id" class="form-control"
+                                                                    value="{{ $absence->motifAbsence->nom }}" disabled>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label for="date_debut">Date de Début</label>
+                                                                <input id="date_debut" type="date" name="date_debut"
+                                                                    class="form-control"
+                                                                    value="{{ $absence->date_debut }}" disabled>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <label for="date_fin">Date de Fin</label>
+                                                                <input id="date_fin" type="date" name="date_fin"
+                                                                    class="form-control" value="{{ $absence->date_fin }}"
+                                                                    disabled>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <small>Repondu par
+                                                            @if ($userApprouve->genre == 'Masculin')
+                                                                M.
+                                                            @else
+                                                                Mme / Mlle
+                                                            @endif
+                                                             <strong>
+                                                                {{ Str::ucfirst($userApprouve->nom) }}
+                                                                {{ Str::ucfirst($userApprouve->prenoms) }}
+                                                            </strong>
+                                                        </small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -319,6 +330,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection

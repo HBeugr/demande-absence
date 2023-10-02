@@ -13,7 +13,8 @@ class StatutAbsenceController extends Controller
     public function index()
     {
         $statuts = StatutAbsence::all();
-        return view('admin.pages.absence.statut', compact('statuts'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.absence.statut', compact('statuts','notifications'));
     }
 
     /**

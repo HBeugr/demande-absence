@@ -22,8 +22,9 @@ class CommandeController extends Controller
         $clients = Client::all();
         $services = Service::all();
         $user = Auth::user();
+        $notifications = auth()->user()->unreadNotifications;
 
-        return view('admin.pages.commande.index', compact('commandes', 'clients', 'services','user'));
+        return view('admin.pages.commande.index', compact('commandes', 'clients', 'services','user', 'notifications'));
     }
 
     /**

@@ -13,7 +13,8 @@ class MotifAbsenceController extends Controller
     public function index()
     {
         $motifs = MotifAbsence::all();
-        return view('admin.pages.absence.motif', compact('motifs'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.absence.motif', compact('motifs','notifications'));
     }
 
     /**

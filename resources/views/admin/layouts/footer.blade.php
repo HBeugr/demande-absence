@@ -105,3 +105,59 @@
         });
     });
 </script>
+<script>
+    $(document).on('click', '#contactMark', function(e) {
+        e.preventDefault();
+        var notificationId = $(this).data('id');
+        var absenceId = $(this).data('absence-id');
+        var markAsReadUrl = "{{ route('mark-as-read', ':id') }}";
+        var redirectToUrl = $(this).attr('href');
+
+        // Perform an AJAX request to mark the notification as read
+        $.ajax({
+            url: markAsReadUrl.replace(':id', notificationId),
+            type: 'GET',
+            success: function() {
+                // After marking as read, redirect to the destination URL
+                window.location.href = redirectToUrl;
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Handle the error if necessary
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Récupérez l'ID de l'absence à partir de l'URL de la route
+        var urlParams = new URLSearchParams(window.location.search);
+        var absenceId = urlParams.get('absence_id');
+
+        // Affichez l'ID dans la console (facultatif)
+        console.log('ID de l\'absence depuis l\'URL : ' + absenceId);
+
+        var boutonSelector = '#bouton';
+
+        // Gestionnaire d'événement pour le clic sur le bouton
+        $(boutonSelector).on('click', function(e) {
+            e.preventDefault(); // Empêche la redirection par défaut du lien
+
+            // Récupérez l'ID de l'absence à partir de l'URL de la route
+            var urlParams = new URLSearchParams(window.location.search);
+            var absenceId = urlParams.get('absence_id');
+
+            if (absenceId) {
+                // L'ID de l'absence a été récupéré avec succès
+                // Sélecteur du modal correspondant
+                var modalSelector = '#edit_absence_details_' + absenceId;
+                console.log(modalSelector);
+
+                // Utilisez jQuery pour montrer le modal
+                $(modalSelector).modal('show');
+            } else {
+                console.error("ID de l'absence non trouvé dans l'URL");
+            }
+        });
+    });
+</script>

@@ -9,7 +9,7 @@
     <title>{{ env('APP_NAME') }}</title>
 
     <!-- Favicons -->
-    <link type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+    <link type="image/x-icon" href="{{ asset('assets/img/faviconX.png') }}" rel="icon">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -39,13 +39,13 @@
             <nav class="navbar navbar-expand-lg header-nav">
                 <div class="navbar-header">
                     <a href="{{ route('login') }}" class="navbar-brand logo">
-                        <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid" alt="Logo">
+                        <img src="{{ asset('assets/img/logoX.png') }}" class="img-fluid" alt="Logo">
                     </a>
                 </div>
                 <div class="main-menu-wrapper">
                     <div class="menu-header">
                         <a href="{{ route('login') }}" class="menu-logo">
-                            <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid" alt="Logo">
+                            <img src="{{ asset('assets/img/logoX.png') }}" class="img-fluid" alt="Logo">
                         </a>
                         <a id="menu_close" class="menu-close" href="javascript:void(0);">
                             <i class="fas fa-times"></i>

@@ -10,7 +10,7 @@
                 <div class="account-content">
                     <div class="row align-items-center justify-content-center">
                         <div class="col-md-7 col-lg-6 login-left">
-                            <img src="assets/img/login-banner.png" class="img-fluid" alt="{{env('APP_NAME')}} Login">
+                            <img src="assets/img/login-banner.jpg" class="img-fluid" alt="{{env('APP_NAME')}} Login">
                         </div>
                         <div class="col-md-12 col-lg-6 login-right">
                             <div class="login-header">
@@ -34,7 +34,7 @@
                                     <a class="forgot-link" href="{{route('forgot-password')}}">Vous avez oublié votre mot de passe ?</a>
                                 </div>
                                 <button class="btn btn-primary btn-block btn-lg login-btn" type="submit">Connexion</button>
-                                <div class="text-center dont-have">Vous n'avez pas de compte? <a href="{{route('register')}}">Register</a></div>
+                                {{-- <div class="text-center dont-have">Vous n'avez pas de compte? <a href="{{route('register')}}">Register</a></div> --}}
                             </form>
                         </div>
                     </div>

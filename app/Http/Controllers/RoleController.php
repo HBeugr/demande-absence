@@ -13,7 +13,8 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('admin.pages.role.index', compact('roles'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.role.index', compact('roles', 'notifications'));
     }
 
     /**

@@ -16,11 +16,6 @@
         $emplCommande = App\Models\Commande::whereMonth('created_at', $currentMonth)
             ->where('user_id', $currentUserId)
             ->get();
-        $emplLivraison = App\Models\Livraison::whereHas('commande', function ($query) use ($currentUserId) {
-            $query->where('user_id', $currentUserId);
-        })
-            ->whereMonth('created_at', $currentMonth)
-            ->get();
 
         //Commercial
         $comAbsence = App\Models\Absence::whereHas('user', function ($query) use ($currentUserId) {
@@ -29,7 +24,6 @@
             ->whereMonth('date_debut', $currentMonth)
             ->get();
         $comCommande = App\Models\Commande::whereMonth('created_at', $currentMonth)->get();
-        $comLivraison = App\Models\Livraison::whereMonth('created_at', $currentMonth)->get();
     @endphp
     <div class="content container-fluid">
 
@@ -175,26 +169,6 @@
                         <div class="card-body">
                             <div class="dash-widget-header">
                                 <span class="dash-widget-icon text-danger border-danger">
-                                    <i class="fe fe-paper-plane"></i>
-                                </span>
-                                <div class="dash-count">
-                                    <h3>{{ $livraisons->count() }}</h3>
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-                                <h6 class="text-muted">Livraisons</h6>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-danger w-50"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dash-widget-header">
-                                <span class="dash-widget-icon text-danger border-danger">
                                     <i class="fe fe-money"></i>
                                 </span>
                                 <div class="dash-count">
@@ -284,31 +258,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="dash-widget-header">
-                                    <span class="dash-widget-icon text-primary border-primary">
-                                        <i class="fe fe-paper-plane"></i>
-                                    </span>
-                                    <div class="dash-count">
-                                        <h3>{{ $emplLivraison->count() }}</h3>
-                                    </div>
-                                </div>
-                                <div class="dash-widget-info">
-                                    <h6 class="text-muted">
-                                        Livraisons du Mois
-                                        <br>
-                                        <br>
-                                    </h6>
-
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-primary w-50"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @elseif (Str::lower($user->departement->nom == 'communication'))
                     communication
                 @endif
@@ -369,26 +318,6 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6 class="text-muted">Commandes du Mois</h6>
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-primary w-50"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="dash-widget-header">
-                                    <span class="dash-widget-icon text-primary border-primary">
-                                        <i class="fe fe-users"></i>
-                                    </span>
-                                    <div class="dash-count">
-                                        <h3>{{ $comLivraison->count() }}</h3>
-                                    </div>
-                                </div>
-                                <div class="dash-widget-info">
-                                    <h6 class="text-muted">Livraisons du Mois</h6>
                                     <div class="progress progress-sm">
                                         <div class="progress-bar bg-primary w-50"></div>
                                     </div>

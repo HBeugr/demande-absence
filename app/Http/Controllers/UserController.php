@@ -17,7 +17,8 @@ class UserController extends Controller
         $roles = Role::all();
         $departements = Departement::all();
         $users = User::all();
-        return view('admin.pages.utilisateur.index', compact('departements', 'roles', 'users'));
+        $notifications = auth()->user()->unreadNotifications;
+        return view('admin.pages.utilisateur.index', compact('departements', 'roles', 'users','notifications'));
     }
 
     /**
